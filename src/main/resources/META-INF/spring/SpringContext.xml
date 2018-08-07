@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/mvc
+     http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/util
+     http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<bean id="zkResource" class="com.usi.zk.ZookeeperResource"/>
+	<bean id="zkPropConfigurer" class="com.usi.zk.ZookeeperConfigurer">
+		<property name="order" value="2"/>
+		<property name="ignoreUnresolvablePlaceholders" value="true"/>
+		<property name="location">
+			<ref bean="zkResource"/>
+		</property>
+	</bean>
+
+	<!-- 注解配置  -->
+	<context:component-scan base-package="com.rabbitmq.consumer,com.rabbitmq.*,com.usi.miu.service" />
+
+	<!--&lt;!&ndash; 引入dubbo provider配置文件&ndash;&gt;-->
+	<import resource="classpath*:/dubbo/dubbo-provider.xml"/>
+
+	<!--mq配置-->
+	<import resource="classpath*:rabbitmq/rabbitmq.xml"/>
+
+</beans>
